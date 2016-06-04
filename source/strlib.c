@@ -2,21 +2,30 @@
 #include <ctype.h>
 #include "strlib.h"
 
-bool endsWith(const char *s, const char *ending)
+
+bool startsWith(const char *const s, const char *const pattern)
 {
-	size_t s_len = strlen(s);
-	size_t ending_len = strlen(ending);
+    return strstr(s, pattern) == s;
+}
+
+
+bool endsWith(const char *const s, const char *const ending)
+{
+	const size_t s_len = strlen(s);
+	const size_t ending_len = strlen(ending);
 
 	if(ending_len > s_len) return false;
 	if(strcmp(s + s_len - ending_len, ending)) return false;
 	return true;
 }
 
-char *trimLeft(char *s)
+
+char *trimLeft(const char *s)
 {
-	while(isspace(*s)) s++;
-	return s;
+	while(isspace(*s)) ++s;
+	return (char *)s;
 }
+
 
 char *trimRight(char *s)
 {

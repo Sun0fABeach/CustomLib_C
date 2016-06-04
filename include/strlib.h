@@ -4,23 +4,22 @@
 #include <stdbool.h>
 
 /*
+   Returns true when s starts with pattern, false otherwise.
+   Also returns true if pattern is an empty string.
+*/
+bool startsWith(const char *const s, const char *const pattern);
+
+/*
    Returns true, when s ends with pattern, false otherwise.
    Will return true if pattern is an empty string.
 */
-bool endsWith(const char *s, const char *ending);
-
-/*
-   Evaluates to true when s starts with pattern, false otherwise.
-   Evaluates to true if pattern is an empty string.
-   CAUTION: Will evaluate argument s twice!
-*/
-#define startsWith(s, pattern) (strstr((s), (pattern)) == (s))
+bool endsWith(const char *const s, const char *const ending);
 
 /*
    Returns a pointer to the first non-whitespace character in s,
    starting from the left.
 */
-char *trimLeft(char *s);
+char *trimLeft(const char *s);
 
 /*
    Searches for the first non-whitespace character, going right to left
