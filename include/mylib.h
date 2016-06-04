@@ -31,7 +31,7 @@
 	indexOf(array, el_to_find, sizeof(double), num_els)
 
 
-/*Returns true, if the element is contained in array, false otherwise.
+/*Returns true if the element is contained in array, false otherwise.
   Implemented by checking whether the indexOf function finds the element*/
 #define contains(array, el_to_find, el_size, num_els)\
 	(indexOf(array, el_to_find, el_size, num_els) >= 0)
@@ -45,7 +45,7 @@
 
 
 /*Changes all elements of array according to given function*/
-void *map(void * const array, const size_t el_size,
+void *map(void *const array, const size_t el_size,
 			const size_t num_els, void (*const func)(void *a));
 
 
@@ -53,14 +53,14 @@ void *map(void * const array, const size_t el_size,
   the given array. In each iteration, the value is updated by a computation
   made by the given function, which takes the current value and the value
   of the current array index as arguments*/
-void *reduce(const void * const array, void * const base_el,
+void *reduce(const void *const array, void *const base_el,
 			const size_t el_size, const size_t num_els,
 			void (*const func)(void *el, void *a));
 
 
 /*Returns index of the first occurence of the element in the array,
   or -1 if not found*/
-int indexOf(const void * const array, const void * const el_to_find,
+int indexOf(const void *const array, const void *const el_to_find,
 				const size_t el_size, const size_t num_els);
 
 #endif
