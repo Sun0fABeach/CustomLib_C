@@ -14,7 +14,7 @@
   or reallocation error occurred. When no characters could be read,
   (at end-of-file, or empty line) the buffer will contain an empty string.
 */
-char *fBufRead(FILE *instream);
+char *fBufRead(FILE *const instream);
 
 #define bufRead() fBufRead(stdin)
 
@@ -29,7 +29,7 @@ char *fBufRead(FILE *instream);
   error occurred. When no characters could be read, (at end-of-file, or empty
   line) the string will be empty.
 */
-char *fReadLine(FILE *instream);
+char *fReadLine(FILE *const instream);
 
 #define readLine() fReadLine(stdin)
 

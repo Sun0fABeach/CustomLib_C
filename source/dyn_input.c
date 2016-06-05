@@ -28,25 +28,25 @@ static size_t nstrings_max = STARTING_STR_MAX;
 
 /******** Dynamic char buffer functions ********/
 
-char *fBufRead(FILE *instream)
+char *fBufRead(FILE *const instream)
 {
-	int c;
-	char *doubledBuf;
-	size_t i = 0;
-
 	if(!buf) {					//first call: init buffer
 		if((buf = malloc(STARTING_CAP * sizeof(char))) == NULL)
 			return NULL;		//abort if buffer can't be allocated
 		else
 			atexit(freeBuf);
 	}
-	   
+
+	int c;
+	size_t i = 0;
+
 	while((c = getc(instream)) != '\n' && c != EOF) {
 		buf[i] = c;
 
 		if(++i == cap) {		//buffer needs doubling:
 			cap *= 2;
-			if((doubledBuf = realloc(buf, cap * sizeof(char))) == NULL)
+            char *doubledBuf = realloc(buf, cap * sizeof(char));
+			if(doubledBuf == NULL)
 				return NULL;	//abort if resizing failed
 			else
 				buf = doubledBuf;
@@ -67,9 +67,9 @@ static void freeBuf()
 
 /******** Dynamic string array functions ********/
 
-char *fReadLine(FILE *instream)
+char *fReadLine(FILE *const instream)
 {
-	if(!strings) {
+	if(strings == NULL) {
 		if((strings = calloc(STARTING_STR_MAX, sizeof(char *)))) //init all NULL
 			atexit(freeStrings);
 		else
@@ -92,20 +92,20 @@ char *fReadLine(FILE *instream)
   handles string reading, returns false when reallocation error occurred
   true otherwise
 */
-static bool getInput(FILE *instream, size_t i, size_t length)
+static bool getInput(FILE *const instream, size_t i, const size_t length)
 {
 	if(!(strings[nstrings] = realloc(strings[nstrings], length * sizeof(char))))
 		return false;	//does malloc if strings[nstrings] is NULL
 
-	char c;
 	while(true) {
-		if((c = getc(instream)) == '\n' || c == EOF) {
-			strings[nstrings][i] = '\0';		//overwrites newline
+        char c = getc(instream);
+		if(c == '\n' || c == EOF) {
+			strings[nstrings][i] = '\0';    //overwrites newline
 			return true;
 		}
 		strings[nstrings][i] = c;
 
-		if(++i == length) 
+		if(++i == length)
 			return getInput(instream, i, length * 2);
 	}
 }
@@ -126,7 +126,7 @@ static void freeStrings()
 size_t clearStrings()
 {
 	size_t i = 0;
-	for(i = 0; i < nstrings; i++) {
+	for(i = 0; i < nstrings; ++i) {
 		free(strings[i]);
 		strings[i] = NULL;
 	}
