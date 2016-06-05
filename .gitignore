@@ -1,0 +1,4 @@
+*.swp
+test_strlib
+test_mylib
+test_dyn_input
