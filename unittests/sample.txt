@@ -1,0 +1,4 @@
+test line bufread
+test line readline1
+test line readline2
+test line readline3
