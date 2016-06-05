@@ -34,6 +34,11 @@ char *fReadLine(FILE *instream);
 #define readLine() fReadLine(stdin)
 
 /*
+ * Returns how many strings are currently allocated through calls to fReadLine.
+ */
+size_t num_strings();
+
+/*
   Frees strings allocated via calls to fReadLine. Can be used to retain some
   memory.
 

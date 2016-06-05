@@ -111,6 +111,12 @@ static bool getInput(FILE *instream, size_t i, size_t length)
 }
 
 
+size_t num_strings()
+{
+    return nstrings;
+}
+
+
 static void freeStrings()
 {
 	clearStrings();
