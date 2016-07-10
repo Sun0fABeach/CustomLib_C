@@ -44,6 +44,18 @@
 	(indexOf(array, el_to_find, sizeof(double), num_els) >= 0)
 
 
+/*Deletes all elements of the given array for which the given callback reports
+  no match. Returns the new size of the array.*/
+#define select(array, el_size, num_els, match_test)\
+    (sortOut(array, el_size, num_els, match_test, true))
+
+
+/*Deletes all elements of the given array for which the given callback reports
+  a match. Returns the new size of the array.*/
+#define reject(array, el_size, num_els, match_test)\
+    (sortOut(array, el_size, num_els, match_test, false))
+
+
 /*Changes all elements of array according to given function*/
 void *map(void *const array, const size_t el_size,
 			const size_t num_els, void (*const func)(void *a));
@@ -62,5 +74,16 @@ void *reduce(const void *const array, void *const base_el,
   or -1 if not found*/
 int indexOf(const void *const array, const void *const el_to_find,
 				const size_t el_size, const size_t num_els);
+
+
+/*Deletes elements of an array and rearranges it so that all kept elements
+  form a continuous sequence starting at the beginning of the array. A callback
+  has to be passed which will perform the task of checking whether an element
+  of the array matches. If a matching element has to be kept or deleted can be
+  determined by the value of keep_on_match. Returns the number of kept elements
+  which is also the new logical size of the array (physical size is unchanged).
+ */
+size_t sortOut(void *const array, const size_t el_size, const size_t num_els,
+        bool (*const match_test)(const void *el), const bool keep_on_match);
 
 #endif

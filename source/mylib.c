@@ -1,7 +1,7 @@
+#include <string.h>
 #include "mylib.h"
 
 
-/*changes all elements in array according to given function*/
 void *map(void *const array, const size_t el_size,
 			const size_t num_els, void (*const func)(void *a))
 {
@@ -12,7 +12,6 @@ void *map(void *const array, const size_t el_size,
 }
 
 
-/*computes a value from base element and all array elements*/
 void *reduce(const void *const array, void *const base_el,
 			const size_t el_size, const size_t num_els,
 			void (*const func)(void *el, void *a))
@@ -24,8 +23,6 @@ void *reduce(const void *const array, void *const base_el,
 }
 
 
-/*return index of first appearance of element in array,
-  -1 if element not in array*/
 int indexOf(const void *const array, const void *const el_to_find,
 				const size_t el_size, const size_t num_els)
 {
@@ -43,4 +40,50 @@ int indexOf(const void *const array, const void *const el_to_find,
 	}
 
 	return -1;
+}
+
+
+size_t sortOut(void *const array, const size_t el_size, const size_t num_els,
+        bool (*const matchTest)(const void *el), const bool keep_on_match)
+{
+    const char *p = array;
+    char *move_pos = NULL;
+    size_t new_size = 0;
+    size_t i;
+
+    for(i = 0; i < num_els; ++i) {  // find first non-match
+        if(matchTest(p) != keep_on_match) {
+            move_pos = (char *)p;
+            break;
+        }
+        ++new_size;
+        p += el_size;
+    }
+
+    if(!move_pos)
+        return num_els;  // no non-match found: keep all
+
+    size_t move_num = 0;
+
+    while(++i < num_els) {
+        p += el_size;
+
+        if(matchTest(p) == keep_on_match) {
+            ++move_num;
+        } else if(move_num > 0) {
+            const size_t bytes_to_move = move_num * el_size;
+            memmove(move_pos, p - bytes_to_move, bytes_to_move);
+            move_pos += bytes_to_move;
+            new_size += move_num;
+            move_num = 0;
+        }
+    }
+
+    if(move_num > 0) { // past array end and pending bytes to move?
+        const size_t bytes_to_move = move_num * el_size;
+        memmove(move_pos, p - bytes_to_move + el_size, bytes_to_move);
+        new_size += move_num;
+    }
+
+    return new_size;
 }
