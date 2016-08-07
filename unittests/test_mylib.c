@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <assert.h>
 #include "mylib.h"
 
@@ -57,44 +58,71 @@ int main()
 
     /* SELECT/REJECT */
 
-    int b[10] = {0};
-    assert(reject(b, sizeof(int), 10, isZero) == 0);  // full reject
-    assert(select(b, sizeof(int), 10, isZero) == 10); // full select
+    memset(a, 0, 10 * sizeof(int));
+    assert(reject(a, sizeof(int), 10, isZero) == 0);  // full reject
+    assert(select(a, sizeof(int), 10, isZero) == 10); // full select
     for(int i = 0; i < 10; ++i) {
-        assert(b[i] == 0);
+        assert(a[i] == 0);
     }
 
-    b[9] = 1;
-    assert(select(b, sizeof(int), 10, isZero) == 9); // all but last
-    assert(reject(b, sizeof(int), 10, isZero) == 1); // none but last
-    assert(b[0] == 1);
+    a[9] = 1;
+    assert(select(a, sizeof(int), 10, isZero) == 9); // all but last
+    assert(reject(a, sizeof(int), 10, isZero) == 1); // none but last
+    assert(a[0] == 1);
     // 1 @ index: 0, 9
-    assert(reject(b, sizeof(int), 10, isZero) == 2); // first and last
-    assert(b[0] == 1);
-    assert(b[1] == 1);
+    assert(reject(a, sizeof(int), 10, isZero) == 2); // first and last
+    assert(a[0] == 1);
+    assert(a[1] == 1);
     // 1 @ index: 0, 1, 9
-    assert(select(b, sizeof(int), 10, isZero) == 7); // one large mid section
+    assert(select(a, sizeof(int), 10, isZero) == 7); // one large mid section
     for(int i = 0; i < 7; ++i) {
-        assert(b[i] == 0);
+        assert(a[i] == 0);
     }
-    b[1] = 1;
-    b[8] = 1;
+    a[1] = 1;
+    a[8] = 1;
     // 1 @ index: 1, 8, 9
-    assert(reject(b, sizeof(int), 10, isZero) == 3); // second and last two
+    assert(reject(a, sizeof(int), 10, isZero) == 3); // second and last two
     for(int i = 0; i < 3; ++i) {
-        assert(b[i] == 1);
+        assert(a[i] == 1);
     }
-    b[5] = 1;
-    b[6] = 1;
+    a[5] = 1;
+    a[6] = 1;
     // 1 @ index: 0, 1, 2, 5, 6, 8, 9
-    assert(select(b, sizeof(int), 10, isZero) == 3); // scattered, not starting
+    assert(select(a, sizeof(int), 10, isZero) == 3); // scattered, not starting
     for(int i = 0; i < 3; ++i) {                     // at array onset
-        assert(b[i] == 0);
+        assert(a[i] == 0);
     }
     // 1 @ index: 5, 6, 8, 9
-    assert(select(b, sizeof(int), 10, isZero) == 6); // scattered, starting
+    assert(select(a, sizeof(int), 10, isZero) == 6); // scattered, starting
     for(int i = 0; i < 6; ++i) {                     // at array onset
-        assert(b[i] == 0);
+        assert(a[i] == 0);
+    }
+
+
+    /* DELETE */
+
+    for(int i = 0; i < 10; ++i) {
+        a[i] = i;
+    }
+
+    assert(!deleteAtIndex(a, sizeof(int), 10, 10));
+    for(int i = 0; i < 10; ++i) {
+        assert(a[i] == i);
+    }
+    assert(deleteAtIndex(a, sizeof(int), 10, 9));
+    for(int i = 0; i < 9; ++i) {
+        assert(a[i] == i);
+    }
+    assert(shift(a, sizeof(int), 10));
+    for(int i = 0; i < 8; ++i) {
+        assert(a[i] == i+1);
+    }
+    assert(deleteAtIndex(a, sizeof(int), 10, 3));
+    for(int i = 0; i < 3; ++i) {
+        assert(a[i] == i+1);
+    }
+    for(int i = 3; i < 4; ++i) {
+        assert(a[i] == i+2);
     }
 
 	exit(EXIT_SUCCESS);

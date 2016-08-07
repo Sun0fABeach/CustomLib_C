@@ -44,6 +44,28 @@
 	(indexOf(array, el_to_find, sizeof(double), num_els) >= 0)
 
 
+/*Convenience macros for using deleteAtIndex with specific data types*/
+#define deleteIntAtIndex(array, num_els, index) \
+    deleteAtIndex(array, sizeof(int), num_els, index)
+#define deleteDoubleAtIndex(array, num_els, index) \
+    deleteAtIndex(array, sizeof(double), num_els, index)
+
+
+/*Deletes first element of given array at given index by moving all the
+  following elements one index backwards. Returns true if the element has been
+  deleted, or false if the array size is 0.
+ */
+#define shift(array, el_size, num_els) \
+    deleteAtIndex(array, el_size, num_els, 0)
+
+
+/*Convenience macros for using shift with specific data types*/
+#define shiftInt(array, num_els) \
+    shift(array, sizeof(int), num_els)
+#define shiftDouble(array, num_els) \
+    shift(array, sizeof(double), num_els)
+
+
 /*Deletes all elements of the given array for which the given callback reports
   no match. Returns the new size of the array.*/
 #define select(array, el_size, num_els, match_test)\
@@ -74,6 +96,14 @@ void *reduce(const void *const array, void *const base_el,
   or -1 if not found*/
 int indexOf(const void *const array, const void *const el_to_find,
 				const size_t el_size, const size_t num_els);
+
+
+/*Deletes element of given array at given index by moving all the following
+  elements one index backwards. Returns true if the element has been deleted,
+  or false if the given index surpassed the array bounds.
+ */
+bool deleteAtIndex(void *const array, const size_t el_size,
+        const size_t num_els, const size_t index);
 
 
 /*Deletes elements of an array and rearranges it so that all kept elements

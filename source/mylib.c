@@ -28,9 +28,9 @@ int indexOf(const void *const array, const void *const el_to_find,
 {
 	const char *p = array;
 
-	for(int i = 0; (size_t)i < num_els; i++, p += el_size) {	//for each el
+	for(int i = 0; (size_t)i < num_els; ++i, p += el_size) {	//for each el
 		bool el_found = true;
-		for(size_t el_i = 0; el_i < el_size; el_i++) {			//check each
+		for(size_t el_i = 0; el_i < el_size; ++el_i) {			//check each
 			if(*(p + el_i) != *((char*)el_to_find + el_i)) {	//byte of el
 				el_found = false;
 				break;
@@ -86,4 +86,18 @@ size_t sortOut(void *const array, const size_t el_size, const size_t num_els,
     }
 
     return new_size;
+}
+
+
+bool deleteAtIndex(void *const array, const size_t el_size,
+        const size_t num_els, const size_t index)
+{
+    if(index >= num_els)
+        return false;
+
+    char *const delete_pos = (char *)array + index * el_size;
+
+    memmove(delete_pos, delete_pos + el_size, (num_els - index - 1) * el_size);
+
+    return true;
 }
