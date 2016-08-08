@@ -100,10 +100,25 @@ int indexOf(const void *const array, const void *const el_to_find,
 
 /*Deletes element of given array at given index by moving all the following
   elements one index backwards. Returns true if the element has been deleted,
-  or false if the given index surpassed the array bounds.
- */
+  or false if the given index surpassed the array bounds.*/
 bool deleteAtIndex(void *const array, const size_t el_size,
         const size_t num_els, const size_t index);
+
+
+/*Deletes first element of given array for which the given test function
+  returns true by moving all the following elements one index backwards.
+  Returns true if the element has been deleted, or false if the given index
+  surpassed the array bounds.*/
+bool deleteFirstMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void* el));
+
+
+/*Deletes last element of given array for which the given test function
+  returns true by moving all the following elements one index backwards.
+  Returns true if the element has been deleted, or false if the given index
+  surpassed the array bounds.*/
+bool deleteLastMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void* el));
 
 
 /*Deletes elements of an array and rearranges it so that all kept elements

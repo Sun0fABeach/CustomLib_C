@@ -99,31 +99,121 @@ int main()
     }
 
 
-    /* DELETE */
+    /* DELETE AT INDEX */
 
     for(int i = 0; i < 10; ++i) {
         a[i] = i;
     }
 
-    assert(!deleteAtIndex(a, sizeof(int), 10, 10));
+    assert(!deleteAtIndex(a, sizeof(int), 10, 10)); // out of bounds
     for(int i = 0; i < 10; ++i) {
         assert(a[i] == i);
     }
-    assert(deleteAtIndex(a, sizeof(int), 10, 9));
+    assert(deleteAtIndex(a, sizeof(int), 10, 9));   // delete last
     for(int i = 0; i < 9; ++i) {
         assert(a[i] == i);
     }
-    assert(shift(a, sizeof(int), 10));
+    assert(shift(a, sizeof(int), 9));               // delete first
     for(int i = 0; i < 8; ++i) {
         assert(a[i] == i+1);
     }
-    assert(deleteAtIndex(a, sizeof(int), 10, 3));
+    assert(deleteAtIndex(a, sizeof(int), 8, 3));    // delete in middle
     for(int i = 0; i < 3; ++i) {
         assert(a[i] == i+1);
     }
-    for(int i = 3; i < 4; ++i) {
+    for(int i = 3; i < 7; ++i) {
         assert(a[i] == i+2);
     }
+
+
+    /* DELETE ON MATCH */
+
+    /* FIRST MATCH */
+
+    for(int i = 0; i < 10; ++i) {   // fill with 1...10
+        a[i] = i+1;
+    }
+    assert(!deleteFirstMatch(a, sizeof(int), 10, isZero)); // no match
+    for(int i = 0; i < 10; ++i) {
+        assert(a[i] == i+1);
+    }
+
+    a[9] = 0;
+    assert(deleteFirstMatch(a, sizeof(int), 10, isZero));  // last matches
+    for(int i = 0; i < 9; ++i) {
+        assert(a[i] == i+1);
+    }
+
+    a[0] = 0;
+    assert(deleteFirstMatch(a, sizeof(int), 9, isZero));   // first matches
+    for(int i = 0; i < 8; ++i) {
+        assert(a[i] == i+2);
+    }
+
+    a[3] = 0;
+    assert(deleteFirstMatch(a, sizeof(int), 8, isZero));   // match in middle
+    for(int i = 0; i < 3; ++i) {
+        assert(a[i] == i+2);
+    }
+    for(int i = 3; i < 7; ++i) {
+        assert(a[i] == i+3);
+    }
+
+    a[0] = 1;
+    a[1] = 0;
+    a[2] = 1;
+    a[3] = 0;
+    a[4] = 1;
+    // 2 matches; only first deleted
+    assert(deleteFirstMatch(a, sizeof(int), 5, isZero));
+    assert(a[0] == 1);
+    assert(a[1] == 1);
+    assert(a[2] == 0);
+    assert(a[3] == 1);
+
+
+    /* LAST MATCH */
+
+    for(int i = 0; i < 10; ++i) {   // fill with 1...10
+        a[i] = i+1;
+    }
+    assert(!deleteLastMatch(a, sizeof(int), 10, isZero)); // no match
+    for(int i = 0; i < 10; ++i) {
+        assert(a[i] == i+1);
+    }
+
+    a[9] = 0;
+    assert(deleteLastMatch(a, sizeof(int), 10, isZero));  // last matches
+    for(int i = 0; i < 9; ++i) {
+        assert(a[i] == i+1);
+    }
+
+    a[0] = 0;
+    assert(deleteLastMatch(a, sizeof(int), 9, isZero));   // first matches
+    for(int i = 0; i < 8; ++i) {
+        assert(a[i] == i+2);
+    }
+
+    a[3] = 0;
+    assert(deleteLastMatch(a, sizeof(int), 8, isZero));   // match in middle
+    for(int i = 0; i < 3; ++i) {
+        assert(a[i] == i+2);
+    }
+    for(int i = 3; i < 7; ++i) {
+        assert(a[i] == i+3);
+    }
+
+    a[0] = 1;
+    a[1] = 0;
+    a[2] = 1;
+    a[3] = 0;
+    a[4] = 1;
+    // 2 matches; only last deleted
+    assert(deleteLastMatch(a, sizeof(int), 5, isZero));
+    assert(a[0] == 1);
+    assert(a[1] == 0);
+    assert(a[2] == 1);
+    assert(a[3] == 1);
 
 	exit(EXIT_SUCCESS);
 }

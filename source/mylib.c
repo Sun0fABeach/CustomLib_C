@@ -101,3 +101,37 @@ bool deleteAtIndex(void *const array, const size_t el_size,
 
     return true;
 }
+
+
+bool deleteFirstMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void* el))
+{
+    char *p = array;
+
+    for(size_t i = 0; i < num_els; ++i) {
+        if(test(p)) {
+            memmove(p, p + el_size, (num_els - i - 1) * el_size);
+            return true;
+        }
+        p += el_size;
+    }
+
+    return false;
+}
+
+
+bool deleteLastMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void* el))
+{
+    char *p = (char *)array + (num_els - 1) * el_size;
+
+    for(long int i = num_els-1; i >= 0; --i) {
+        if(test(p)) {
+            memmove(p, p + el_size, (num_els - i - 1) * el_size);
+            return true;
+        }
+        p -= el_size;
+    }
+
+    return false;
+}
