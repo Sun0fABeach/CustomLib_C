@@ -104,7 +104,7 @@ bool deleteAtIndex(void *const array, const size_t el_size,
 
 
 bool deleteFirstMatch(void *const array, const size_t el_size,
-        const size_t num_els, bool (*const test)(const void* el))
+        const size_t num_els, bool (*const test)(const void *el))
 {
     char *p = array;
 
@@ -121,7 +121,7 @@ bool deleteFirstMatch(void *const array, const size_t el_size,
 
 
 bool deleteLastMatch(void *const array, const size_t el_size,
-        const size_t num_els, bool (*const test)(const void* el))
+        const size_t num_els, bool (*const test)(const void *el))
 {
     char *p = (char *)array + (num_els - 1) * el_size;
 
@@ -134,4 +134,19 @@ bool deleteLastMatch(void *const array, const size_t el_size,
     }
 
     return false;
+}
+
+
+bool allMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void *el))
+{
+    char *p = array;
+
+    for(size_t i = 0; i < num_els; ++i) {
+        if(!test(p))
+            return false;
+        p += el_size;
+    }
+
+    return true;
 }

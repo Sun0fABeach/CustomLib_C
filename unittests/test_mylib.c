@@ -215,5 +215,24 @@ int main()
     assert(a[2] == 1);
     assert(a[3] == 1);
 
+
+    /* ALL MATCH TEST */
+
+    memset(a, 0, 10 * sizeof(int));
+    assert(allMatch(a, sizeof(int), 10, isZero));
+    for(int i = 0; i < 10; ++i) {
+        assert(a[i] == 0);
+    }
+
+    a[5] = 1;
+    assert(!allMatch(a, sizeof(int), 10, isZero));
+    for(int i = 0; i < 5; ++i) {
+        assert(a[i] == 0);
+    }
+    assert(a[5] == 1);
+    for(int i = 6; i < 10; ++i) {
+        assert(a[i] == 0);
+    }
+
 	exit(EXIT_SUCCESS);
 }

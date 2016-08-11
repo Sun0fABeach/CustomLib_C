@@ -110,7 +110,7 @@ bool deleteAtIndex(void *const array, const size_t el_size,
   Returns true if the element has been deleted, or false if the given index
   surpassed the array bounds.*/
 bool deleteFirstMatch(void *const array, const size_t el_size,
-        const size_t num_els, bool (*const test)(const void* el));
+        const size_t num_els, bool (*const test)(const void *el));
 
 
 /*Deletes last element of given array for which the given test function
@@ -118,7 +118,13 @@ bool deleteFirstMatch(void *const array, const size_t el_size,
   Returns true if the element has been deleted, or false if the given index
   surpassed the array bounds.*/
 bool deleteLastMatch(void *const array, const size_t el_size,
-        const size_t num_els, bool (*const test)(const void* el));
+        const size_t num_els, bool (*const test)(const void *el));
+
+
+/*Tests if the given test function returns true for all elements of the given
+  array. Returns true if it does and false otherwise.*/
+bool allMatch(void *const array, const size_t el_size,
+        const size_t num_els, bool (*const test)(const void *el));
 
 
 /*Deletes elements of an array and rearranges it so that all kept elements
